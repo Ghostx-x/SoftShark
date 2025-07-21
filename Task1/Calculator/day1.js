@@ -1,4 +1,9 @@
+const readline = require('readline');
 
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
 function calculator(a, symbol, b) {
     if (symbol === "+") {
@@ -18,25 +23,19 @@ function calculator(a, symbol, b) {
     }
 }
 
+rl.question('Enter the first number: ', (num1Input) => {
+    const num1 = parseFloat(num1Input);
 
-const argvs = process.argv;
-const argv = argvs.slice(2);
+    rl.question('Enter the operator (+, -, *, /): ', (operator) => {
 
-    
-if (argv.length !== 3) {
-    console.log("Usage: node day1.js <num1> <operator> <num2>");
-    process.exit(1);
-}
+        rl.question('Enter the second number: ', (num2Input) => {
+            const num2 = parseFloat(num2Input);
 
+            const result = calculator(num1, operator, num2);
 
-const num1 = parseFloat(argv[0]);
-const operator = argv[1]; 
-const num2 = parseFloat(argv[2]);
+            console.log(`Result: ${result}`);
 
-
-
-
-const result = calculator(num1, operator, num2);
-
-
-console.log(`Result: ${result}`);
+            rl.close();
+        });
+    });
+});
