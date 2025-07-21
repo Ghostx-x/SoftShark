@@ -22,7 +22,7 @@ function calculator(a, symbol, b) {
 const argvs = process.argv;
 const argv = argvs.slice(2);
 
-
+    
 if (argv.length !== 3) {
     console.log("Usage: node day1.js <num1> <operator> <num2>");
     process.exit(1);
