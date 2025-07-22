@@ -21,11 +21,16 @@ function boggle(num1, num2, callback) {
 
 function calculate(input, callback) {
     fizzle(input, (qux) => {
-        while(qux<input) {
-            boggle(input, qux, (result) => {
-                return callback(qux += result)
-            })
-        }
+        function check(qux) {
+            if(qux<input) {
+                boggle(input, qux, (result) => {
+                    qux += result;
+                    check(qux)
+                })
+            } else {
+                callback(qux);
+            }
+        } check(qux);
     })
 }
 
