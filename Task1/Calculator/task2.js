@@ -74,7 +74,7 @@ function evaluateExpression(expr) {
   return stack[0];
 }
 
-//hey
+
 rl.question('Enter a mathematical expression', (input) => {
     if (isValidExpression(input)) {
         const result = evaluateExpression(input);
