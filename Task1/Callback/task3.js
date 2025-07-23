@@ -35,10 +35,19 @@ function boggle(num1, num2, callback) {
 // }
 
 function calculate(input, callback) {
-    callback(input + 5);
+    let x =  callback(input + 5)
+    return x;
 }
 // calculate (10, console.log)
 
-    calculate (10, (result) => {
-        return(result)
-    })
+    // calculate (10, (result) => {
+    //     return(result)
+    // })
+
+
+let x = calculate(10, (result) => {
+    return result;
+    //console.log(result); 
+});
+
+console.log(x);
