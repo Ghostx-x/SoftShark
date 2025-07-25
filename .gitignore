@@ -1,6 +1,2 @@
 .DS_Store
-<<<<<<< HEAD
-
-	
-=======
->>>>>>> 6c81ac1 (Apply .gitignore)
+node_modules/
