@@ -49,7 +49,7 @@ function createJob(id) {
         console.log(`Job ${id} running...`);
         const maybeFail = Math.random() < 0.5;
         if (maybeFail) {
-            job.emit('jobFailed');
+            throw new Error(job.emit('jobFailed'))
         }
         await Promise.resolve();
         console.log(`Job ${id} done`);
