@@ -1,10 +1,15 @@
 const EventEmitter = require('node:events');
 const eventEmitter = new EventEmitter();
 
-eventEmitter.on('message send', (number) => {
-    for (let i = 0; i < number; i++) {
-        console.log('message send')
-    }
+eventEmitter.once('userLogin', (body) => {
+    console.log(body)
+    eventEmitter.emit('userLoginFinished', {name: "Natali", xxx: {}})
 })
 
-eventEmitter.emit('message send', 3);
+eventEmitter.on('userLoginFinished', (body) => {
+    console.log('userLoginFinished')
+})
+
+eventEmitter.emit('userLogin', {name: "Natali", xxx: {}});
+
+eventEmitter.emit('userLogin', {name: "Natali", xxx: {}});
