@@ -1,5 +1,5 @@
 const EventEmitter = require('node:events');
-const eventEmitter = new EventEmitter();
+// const eventEmitter = new EventEmitter();
 
 class JobQueue extends EventEmitter{
     constructor() {
@@ -9,8 +9,11 @@ class JobQueue extends EventEmitter{
     addJob(jobFunction) {
         this.queue.push(jobFunction);
         this.emit('jobQueue', this.queue.length);
-        console.log("The job was added");
+        jobFunction()
+            .then(() => job.emit('jobCompleted'))
+            .catch(() => job.emit('jobFailed'));
     }
+
 }
 
 const job =  new JobQueue();
@@ -27,7 +30,7 @@ job.on('jobStarted', () => {
 })
 job.on('jobCompleted', () => {
     setTimeout(function() {
-        console.log("Job is completed...")
+        console.log("Job is completed")
     }, 2000)
 })
 job.on('jobFailed', () => {
@@ -57,11 +60,6 @@ function createJob(id) {
 }
 
 for (let i = 1; i <= 5; i++) {
-    const jobFunction = createJob(i);
-    job.addJob(jobFunction);
-
-    jobFunction()
-        .then(() => job.emit('jobCompleted'))
-        .catch(() => job.emit('jobFailed'));
+    job.addJob(createJob(i));
 }
 
