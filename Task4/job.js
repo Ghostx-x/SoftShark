@@ -1,17 +1,45 @@
 const EventEmitter = require('node:events');
 // const eventEmitter = new EventEmitter();
 
+
+// empty the queue
+// add process function to process jobs when they arrive
+
 class JobQueue extends EventEmitter{
     constructor() {
         super();
         this.queue = [];
+        this.isProcess = false;
     }
-    addJob(jobFunction) {
+    async addJob(jobFunction) {
         this.queue.push(jobFunction);
         this.emit('jobQueue', this.queue.length);
-        jobFunction()
-            .then(() => job.emit('jobCompleted'))
-            .catch(() => job.emit('jobFailed'));
+
+        // try {
+        //     await jobFunction();
+        //     this.emit('jobCompleted');
+        // } catch (error) {
+        //     this.emit('jobFailed');
+        // }
+
+        this.processJob();
+    }
+
+    async processJob() {
+        this.isProcess = true;
+
+        while (this.queue.length > 0) {
+            const currentJob = this.queue.shift();
+            this.emit('jobStarted');
+            try {
+                await currentJob();
+                this.emit('jobCompleted');
+            } catch (error){
+                this.emit('jobFailed');
+            }
+        }
+        this.emit('queueEmpty');
+        this.isProcess = false;
     }
 
 }
@@ -19,30 +47,20 @@ class JobQueue extends EventEmitter{
 const job =  new JobQueue();
 
 job.on('jobQueue', (length) => {
-    setTimeout(function() {
-        console.log(`Queue length ${length}`)
-    }, 2000)
+    console.log(`Queue length ${length}`)
 })
 job.on('jobStarted', () => {
-    setTimeout(function() {
-        console.log("Job is starting...")
-    }, 2000)
+    console.log("Job is starting...")
 })
 job.on('jobCompleted', () => {
-    setTimeout(function() {
-        console.log("Job is completed")
-    }, 2000)
+    console.log("Job is completed")
 })
 job.on('jobFailed', () => {
-    setTimeout(function() {
-        console.log("Job got failed(...")
-    }, 2000)
+    console.log("Job got failed(...")
 })
 
 job.on('queueEmpty', () => {
-    setTimeout(function() {
-        console.log("No jobs in the queue...")
-    }, 2000)
+    console.log("No jobs in the queue...")
 })
 
 
@@ -52,7 +70,7 @@ function createJob(id) {
         console.log(`Job ${id} running...`);
         const maybeFail = Math.random() < 0.5;
         if (maybeFail) {
-            throw new Error(job.emit('jobFailed'))
+            throw new Error("Error")
         }
         await Promise.resolve();
         console.log(`Job ${id} done`);
