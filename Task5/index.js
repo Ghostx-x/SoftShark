@@ -27,16 +27,6 @@ async function saveUsers(users) {
     }
 }
 
-
-// function read() {
-//     const data = fs.readFileSync(filePath);
-//     return JSON.parse(data);
-// }
-//
-// function saveUsers(users) {
-//     fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
-// }
-
 let users = [];
 
 
