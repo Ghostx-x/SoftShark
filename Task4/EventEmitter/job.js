@@ -9,7 +9,6 @@ class JobQueue extends EventEmitter{
     constructor() {
         super();
         this.queue = [];
-        this.isProcess = false;
     }
     async addJob(jobFunction) {
         this.queue.push(jobFunction);
@@ -26,20 +25,17 @@ class JobQueue extends EventEmitter{
     }
 
     async processJob() {
-        this.isProcess = true;
 
         while (this.queue.length > 0) {
-            const currentJob = this.queue.shift();
             this.emit('jobStarted');
             try {
-                await currentJob();
+                await this.queue.shift();
                 this.emit('jobCompleted');
             } catch (error){
                 this.emit('jobFailed');
             }
         }
         this.emit('queueEmpty');
-        this.isProcess = false;
     }
 
 }
