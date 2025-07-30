@@ -1,10 +1,10 @@
 const express = require('express');
-const fs = require('fs').promises;
+
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-const filePath = path.join(__dirname, 'users.json');
+
 const { read, saveUsers } = require('./function');
 
 app.use(express.json());
