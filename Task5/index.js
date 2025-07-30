@@ -5,31 +5,12 @@ const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const filePath = path.join(__dirname, 'users.json');
+const { read, saveUsers } = require('./function');
 
 app.use(express.json());
 
-async function read() {
-    try {
-        const data = await fs.readFile(filePath, 'utf8');
-        return JSON.parse(data);
-    } catch (err) {
-        console.error('Error ', err.message);
-        return [];
-    }
-}
-
-
-async function saveUsers(users) {
-    try {
-        await fs.writeFile(filePath, JSON.stringify(users, null, 2));
-    } catch (err) {
-        console.error('Error saving users:', err.message);
-    }
-}
 
 let users = [];
-
-
 
 app.get('/users', (req, res) => {
     res.json(users);
@@ -82,8 +63,13 @@ app.patch('/users/:id', (req, res) => {
 
 app.put('/users/:id', (req, res) => {
     const { profession, name, email } = req.body;
-    const user = users.find(u => u.id === parseInt(req.params.id));
+    const user = users.find(u => u.id === req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
+
+    const userExists = users.find(user => user.email === email);
+    if (userExists) {
+        return res.status(409).json({ message: 'Error: Write another email' });
+    }
 
     user.name = name;
     user.profession = profession;
