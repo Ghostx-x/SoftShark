@@ -1,37 +1,34 @@
 const express = require('express');
+
+const path = require('path');
 const { v4: uuidv4 } = require('uuid');
-const { read, saveUsers } = require('./function');
+
 const app = express();
+
+const { read, saveUsers } = require('./function');
 
 app.use(express.json());
 
+
 let users = [];
 
-// app.get('/users', (req, res) => {
-//     res.json(users);
-// });
-
 app.get('/users', (req, res) => {
-    // let arr = [];
-    // users.forEach( user => {
-    //     arr.push(user.name, user.email)
-    // })
-    // res.json(arr);
-
-    const mapped = users.map(user => ({name:user.name, email:user.email}));
-    res.json(mapped);
-
+    res.json(users);
 });
+
+//TODO add email to user, which must be unique
 app.post('/users', (req, res) => {
-    const { profession, name, email, metadata} = req.body;
+    // if user with same email exists needs to return an error
+    const { profession, name, email } = req.body;
     const generatedID = uuidv4();
     const newClient = {
-        id: generatedID,
+        id: generatedID,// TODO use UUID lib to generate id
         name:name,
         profession: profession,
         email: email,
-        ...metadata
     };
+
+
     const userExists = users.find(user => user.email === email);
     if (userExists) {
         return res.status(409).json({ message: 'Error: Write another email' });
@@ -43,11 +40,15 @@ app.post('/users', (req, res) => {
 })
 
 
+
+//TODO add patch method, explain what is the difference between patch and put
+
+
 app.patch('/users/:id', (req, res) => {
     const user = users.find(u => u.id === req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const { name, email, profession, metadata } = req.body;
+    const { name, email, profession } = req.body;
 
     if (name !== undefined) user.name = name;
     if (email !== undefined) user.email = email;
@@ -56,7 +57,7 @@ app.patch('/users/:id', (req, res) => {
     saveUsers(users);
     res.json(users);
 });
-
+//
 
 
 

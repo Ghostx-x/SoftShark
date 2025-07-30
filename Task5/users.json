@@ -16,21 +16,5 @@
     "name": "Aram",
     "profession": "HR manager",
     "email": "arsen@gmail.com"
-  },
-  {
-    "id": "518efba9-d346-4290-8590-16c2dcab6585",
-    "name": "Lilith",
-    "profession": "QA",
-    "email": "yey@gmail.com",
-    "desc": "yey",
-    "loc": "yer"
-  },
-  {
-    "id": "b75c9385-d185-41c9-b312-615ded9fbaee",
-    "name": "hshhs",
-    "profession": "majsjjdnager",
-    "email": "jsjj@gmail.com",
-    "loc": "sjjsj",
-    "dsjks": "djsj"
   }
 ]
