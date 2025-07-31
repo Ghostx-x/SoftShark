@@ -10,20 +10,8 @@
     "email": "arsen@gmail.com"
   },
   "d840da41-0221-4130-918d-33b5309d1199": {
-    "name": "Anahit S",
-    "profession": "Back-end developer",
-    "email": "an@gmail.com",
-    "metadata": {
-      "he": "wooo",
-      "boo": "hehe"
-    }
-  },
-  "a4241aa0-1be2-4aa5-a64e-92af20d3db24": {
-    "name": "Daniel",
-    "profession": "UX UI Designer",
-    "email": "dan@gmail.com",
-    "loc": "yer",
-    "reg": "hehe"
+    "email": "anna@gmail.com",
+    "name": "Anna"
   },
   "fcb3c60a-f881-4e76-b3bb-d6d2b31299f7": {
     "name": "Lilith",
@@ -31,5 +19,10 @@
     "email": "lil@gmail.com",
     "loc": "yer",
     "reg": "hehe"
+  },
+  "e85a50ee-ae48-46a0-af6f-cc5588bccd12": {
+    "name": "Gohar",
+    "profession": "Painter",
+    "email": "gohar@gmail.com"
   }
 }
