@@ -1,98 +1,111 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const { read, saveUsers } = require('./function');
+const path = require('path');
+
 const app = express();
 
+app.use((req, res, next) => {
+    if (req.method === 'POST' && req.headers['content-type'] !== 'application/json') {
+        return res.status(415).json({ message: 'Content-Type must be application/json' });
+    }
+    next();
+});
 app.use(express.json());
 
-let users = [];
+const usersPath = path.join(__dirname, 'users.json');
 
-// app.get('/users', (req, res) => {
-//     res.json(users);
-// });
-//
-app.get('/users', (req, res) => {
-    // let arr = [];
-    // users.forEach( user => {
-    //     arr.push(user.name, user.email)
-    // })
-    // res.json(arr);
+app.get('/users/:id', async (req, res) => {
+    try {
+        const users = await read(usersPath);
+        let { id } = req.params;
+        const user = users[id];
 
-    const mapped = users.map(user => ({name:user.name, email:user.email}));
-    res.json(mapped);
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
-});
-app.post('/users', (req, res) => {
-    const { profession, name, email, metadata} = req.body;
-    const generatedID = uuidv4();
-    const newClient = {
-        id: generatedID,
-        name:name,
-        profession: profession,
-        email: email,
-        ...metadata
-    };
-    const userExists = users.find(user => user.email === email);
-    if (userExists) {
-        return res.status(409).json({ message: 'Error: Write another email' });
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-
-    users.push(newClient);
-    saveUsers(users)
-    res.json(users)
-})
-
-
-app.patch('/users/:id', (req, res) => {
-    const user = users.find(u => u.id === req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    const { name, email, profession, metadata } = req.body;
-
-    if (name !== undefined) user.name = name;
-    if (email !== undefined) user.email = email;
-    if (profession !== undefined) user.profession = profession;
-
-    saveUsers(users);
-    res.json(users);
 });
 
+app.post('/users', async (req, res) => {
+    try {
+        const { name, profession, email, metadata = {} } = req.body;
 
+        const users = await read(usersPath);
+        const id = uuidv4();
+        const newUser = { name, profession, email, ...metadata };
 
+        users[id] = newUser;
 
-app.put('/users/:id', (req, res) => {
-    const { profession, name, email } = req.body;
-    const user = users.find(u => u.id === req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
+        await saveUsers(usersPath, users);
 
-    const userExists = users.find(user => user.email === email);
-    if (userExists) {
-        return res.status(409).json({ message: 'Error: Write another email' });
+        res.json({ id, ...newUser });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-
-    user.name = name;
-    user.profession = profession;
-    user.email = email;
-
-    saveUsers(users)
-    res.json(users);
 });
 
+app.put('/users/:id', async (req, res) => {
+    try {
+        const { name, profession, email, metadata } = req.body;
+        const users = await read(usersPath);
 
-app.delete('/users/:id', (req, res) => {
-    const index = users.findIndex(u => u.id === req.params.id);
-    if (index === -1) return res.status(404).json({ message: 'User not found' });
+        let { id } = req.params;
+        const user = users[id];
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
-    users.splice(index, 1);
-    saveUsers(users)
-    res.json(users);
+        users[id] = { name, profession, email, ...metadata };
+
+        await saveUsers(usersPath, users);
+
+        res.json({ id, ...users[id] });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 });
 
-async function start() {
-    users = await read();
-    app.listen(8080, () => {
-        console.log('Running on port 8080');
-    });
-}
+app.patch('/users/:id', async (req, res) => {
+    try {
+        const { name, profession, email, metadata } = req.body;
+        const users = await read(usersPath);
 
-start();
+        let id = req.params.id;
+        const user = users[id];
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        if (name) users[id].name = name;
+        if (email) users[id].email = email;
+        if (profession) users[id].profession = profession;
+        if (metadata) users[id] = { ...users[id], ...metadata };
+
+        await saveUsers(usersPath, users);
+
+        res.json({ id, ...users[id] });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+app.delete('/users/:id', async (req, res) => {
+    try {
+        const users = await read(usersPath);
+
+        let id = req.params.id;
+        const user = users[id];
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        delete users[id];
+
+        await saveUsers(usersPath, users);
+
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+app.listen(8080, () => {
+    console.log("Running on port 8080");
+});
