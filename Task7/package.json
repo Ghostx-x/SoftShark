@@ -9,8 +9,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bloomfilter": "^0.0.21",
     "express": "^5.1.0",
     "joi": "^17.13.3",
+    "redis": "^5.7.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
