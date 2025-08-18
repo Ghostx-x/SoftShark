@@ -1,0 +1,21 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: natali
+      POSTGRES_PASSWORD: 8409
+      POSTGRES_DB: firstDB
+    ports:
+      - "5433:5432"
+    networks:
+      - network-my-postgres
+
+networks:
+  network-my-postgres:
+    external: true
