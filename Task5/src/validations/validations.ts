@@ -7,4 +7,4 @@ const userSchema = Joi.object({
     metadata: Joi.object().optional()
 });
 
-module.exports = userSchema;
+export default userSchema;
