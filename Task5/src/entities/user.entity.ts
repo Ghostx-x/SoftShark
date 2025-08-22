@@ -1,15 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity("users")
+@Entity('users')
 export class User {
-    @PrimaryGeneratedColumn("uuid")
-    id!: string;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string
     @Column()
-    name!:string;
+    name!:string
     @Column({ unique: true })
-    email!: string;
+    email!: string
     @Column()
-    profession!:string;
+    profession!:string
     @Column({ type: 'jsonb', nullable: true })
-    metadata: any;
+    metadata: any
 }
