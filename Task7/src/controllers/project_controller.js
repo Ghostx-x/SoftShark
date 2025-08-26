@@ -20,7 +20,6 @@ export const ProjectController = {
             });
             res.json(projects);
         } catch (err) {
-            res.status(500).json({ error: err.message });
         }
     }
 

@@ -75,4 +75,5 @@ router.post("/", ProjectController.create);
  *             $ref: '#/components/schemas/Project'
  */
 router.get("/", ProjectController.list);
+
 export default router

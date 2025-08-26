@@ -15,7 +15,6 @@ export const ProjectModel = {
     async list({q, offset, limit=10}) {
         const values = [];
         let where = '';
-        //const { rows } = await pool.query("SELECT id, name, description, created_at FROM projects");
 
         if(q) {
             where = 'WHERE name ILIKE $1 OR description ILIKE $1';
@@ -29,7 +28,7 @@ export const ProjectModel = {
                     ORDER BY created_at DESC 
                     LIMIT $${values.length} OFFSET $${values.length - 1}`;
 
-        const { rows : data } = await pool.query(query, values);
+        const { data } = await pool.query(query, values);
         return { limit, offset, data };
     }
 }
