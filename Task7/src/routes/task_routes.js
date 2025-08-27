@@ -5,8 +5,17 @@ const router = express.Router();
 
 /**
  * @swagger
+ * tags:
+ *   name: Tasks
+ *   description: Task management
+ */
+
+/**
+ * @swagger
  * /tasks:
  *   post:
+ *     tags:
+ *       - Tasks
  *     summary: Create a new task
  *     requestBody:
  *       required: true
@@ -50,6 +59,8 @@ router.post("/", TaskController.create);
 * @swagger
 * /tasks:
 *   get:
+*     tags:
+*       - Tasks
 *     summary: Get the list of all tasks
 *     parameters:
 *       - in: query
@@ -81,6 +92,8 @@ router.get("/", TaskController.list);
  * @swagger
  * /tasks/{task_id}:
  *   get:
+ *     tags:
+ *       - Tasks
  *     summary: Get detailed info about selected task
  *     description: Returns a task along with its assignee, project details, and number of comments
  *     parameters:
@@ -104,6 +117,8 @@ router.get("/:task_id", TaskController.details)
  * @swagger
  * /tasks/{task_id}/assign:
  *   patch:
+ *     tags:
+ *       - Tasks
  *     summary: Update the assignee
  *     description: Updates the assigned user for a task and returns the updated task
  *     parameters:

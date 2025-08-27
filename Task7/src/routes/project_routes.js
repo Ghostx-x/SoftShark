@@ -5,8 +5,17 @@ const router = express.Router();
 
 /**
  * @swagger
+ * tags:
+ *   name: Projects
+ *   description: Project management
+ */
+
+/**
+ * @swagger
  * /projects:
  *   post:
+ *     tags:
+ *       - Projects
  *     summary: Create a new project
  *     requestBody:
  *       required: true
@@ -28,6 +37,8 @@ router.post("/", ProjectController.create);
  * @swagger
  * /projects:
  *   get:
+ *     tags:
+ *       - Projects
  *     summary: List projects (supports search & pagination)
  *     parameters:
  *       - in: query

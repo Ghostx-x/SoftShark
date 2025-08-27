@@ -12,7 +12,7 @@ export const ProjectModel = {
         return rows[0];
     },
 
-    async list({q, offset, limit=10}) {
+    async list({q, offset=0, limit=10}) {
         const values = [];
         let where = '';
 
@@ -28,7 +28,7 @@ export const ProjectModel = {
                     ORDER BY created_at DESC 
                     LIMIT $${values.length} OFFSET $${values.length - 1}`;
 
-        const { data } = await pool.query(query, values);
+        const { rows : data } = await pool.query(query, values);
         return { limit, offset, data };
     }
 }
