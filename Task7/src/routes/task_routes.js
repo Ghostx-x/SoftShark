@@ -98,4 +98,42 @@ router.get("/", TaskController.list);
  *         description: Invalid request
  */
 router.get("/:task_id", TaskController.details)
+
+
+/**
+ * @swagger
+ * /tasks/{task_id}/assign:
+ *   patch:
+ *     summary: Update the assignee
+ *     description: Updates the assigned user for a task and returns the updated task
+ *     parameters:
+ *       - in: path
+ *         name: task_id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the task to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               new_assigned_to:
+ *                 type: string
+ *                 example: john_doe
+ *             required:
+ *               - new_assigned_to
+ *     responses:
+ *       200:
+ *         description: Task assigned successfully
+ *
+ *       400:
+ *         description: Invalid request (task or user not found)
+ */
+
+router.patch("/:task_id/assign", TaskController.updateAssign);
+
+
 export default router

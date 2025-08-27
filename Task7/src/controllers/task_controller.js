@@ -30,6 +30,17 @@ export const TaskController = {
         } catch (err) {
             res.status(400).json({ error: err.message });
         }
+    },
+
+    async updateAssign(req, res) {
+        try {
+            const { task_id } = req.params;
+            const { new_assigned_to } = req.body;
+            const updatedTask = await TaskModel.updateAssign(task_id, new_assigned_to);
+            res.json(updatedTask)
+        } catch (err) {
+            res.status(400).json({ error: err.message });
+        }
     }
 
 }

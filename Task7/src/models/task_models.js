@@ -57,6 +57,19 @@ export const TaskModel = {
         );
         if (rows.length === 0) throw new Error("Task not found");
         return rows[0];
+    },
+
+    async updateAssign(id, new_assigned_to) {
+        const { rows : taskExists } = await pool.query("SELECT id FROM tasks WHERE id = $1", [id]);
+        if (taskExists.length === 0) throw new Error("Task id doesn't exist");
+
+        const { rows : users } = await pool.query("SELECT username FROM users WHERE username = $1", [new_assigned_to]);
+        if(users.length === 0) throw new Error("User with that name doesn't exist");
+
+        const { rows : result } = await pool.query("UPDATE tasks SET assigned_to = $1, updated_at = NOW() WHERE id = $2 RETURNING id, title, assigned_to, updated_at", [new_assigned_to, id])
+
+        return result[0];
+
     }
 
 }
