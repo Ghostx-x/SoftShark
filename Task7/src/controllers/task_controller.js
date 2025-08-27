@@ -9,6 +9,17 @@ export const TaskController = {
         } catch (err) {
             res.status(400).json({ error: err.message });
         }
+    },
+
+    async list(req, res) {
+        try {
+            const { project_id, status, due_date } = req.query;
+
+            const tasks = await TaskModel.list(project_id, status, due_date);
+            res.json(tasks);
+        } catch (err) {
+            res.status(400).json({ error: err.message });
+        }
     }
 
 }

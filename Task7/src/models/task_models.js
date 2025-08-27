@@ -23,5 +23,15 @@ export const TaskModel = {
             [title, project_id, status, due_date, assigned_to || null]
         );
         return rows[0];
+    },
+
+    async list(project_id, status, due_date) {
+        const { rows : tasks } = await pool.query("SELECT title, project_id, status, due_date, assigned_to FROM tasks WHERE project_id = $1", [project_id])
+
+        if(status || due_date) {
+            const { rows : filterStatus } = await pool.query("SELECT title, project_id, status, due_date, assigned_to FROM tasks WHERE project_id = $1 AND status = $2 AND due_date = $3 ORDER BY due_date NULLS LAST, created_at DESC", [project_id, status, due_date]);
+            return filterStatus;
+        }
+        return tasks;
     }
 }
