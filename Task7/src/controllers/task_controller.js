@@ -20,6 +20,16 @@ export const TaskController = {
         } catch (err) {
             res.status(400).json({ error: err.message });
         }
+    },
+
+    async details(req, res) {
+        try {
+            const { task_id } = req.params;
+            const task_details = await TaskModel.detail(task_id);
+            res.json(task_details)
+        } catch (err) {
+            res.status(400).json({ error: err.message });
+        }
     }
 
 }

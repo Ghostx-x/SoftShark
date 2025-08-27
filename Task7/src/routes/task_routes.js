@@ -39,18 +39,7 @@ const router = express.Router();
  *     responses:
  *       200:
  *         description: Task created successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id: { type: integer, example: 1 }
- *                 title: { type: string, example: Finish documentation }
- *                 project_id: { type: integer, example: 1 }
- *                 status: { type: string, example: in_progress }
- *                 due_date: { type: string, format: date }
- *                 assigned_to: { type: string, example: john_doe }
- *                 created_at: { type: string, format: date-time }
+ *
  *       400:
  *         description: Invalid input (project/user doesn't exist, invalid status, etc.)
  */
@@ -82,36 +71,31 @@ router.post("/", TaskController.create);
 *     responses:
 *       200:
 *         description: Task listed successfully
-*         content:
-*           application/json:
-*             schema:
-    *               type: array
-*               items:
-*                 type: object
-*                 properties:
-*                   id:
-    *                     type: integer
-*                     example: 1
-*                   title:
-*                     type: string
-*                     example: Finish documentation
-*                   project_id:
-*                     type: integer
-*                     example: 1
-*                   status:
-*                     type: string
-*                     example: in_progress
-*                   due_date:
-*                     type: string
-*                     format: date
-*                   assigned_to:
-*                     type: string
-*                     example: john_doe
-*                   created_at:
-*                     type: string
-*                     format: date-time
+*
 *       400:
 *         description: Error
 */
 router.get("/", TaskController.list);
+
+/**
+ * @swagger
+ * /tasks/{task_id}:
+ *   get:
+ *     summary: Get detailed info about selected task
+ *     description: Returns a task along with its assignee, project details, and number of comments
+ *     parameters:
+ *       - in: path
+ *         name: task_id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the task
+ *     responses:
+ *       200:
+ *         description: Task detail fetched successfully
+ *
+ *       400:
+ *         description: Invalid request
+ */
+router.get("/:task_id", TaskController.details)
 export default router

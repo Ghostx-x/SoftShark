@@ -33,5 +33,30 @@ export const TaskModel = {
             return filterStatus;
         }
         return tasks;
+    },
+
+    async detail(task_id) {
+        const { rows } = await pool.query(
+            `SELECT 
+            t.id,
+            t.title,
+            t.status,
+            t.due_date,
+            t.created_at,
+            u.username AS assigned_to,
+            p.id AS project_id,
+            p.name,
+            COUNT(c.id) AS comment_count
+        FROM tasks t
+        LEFT JOIN users u ON t.assigned_to = u.username
+        LEFT JOIN projects p ON t.project_id = p.id
+        LEFT JOIN comments c ON t.id = c.task_id
+        WHERE t.id = $1
+        GROUP BY t.id, u.username, p.id`,
+            [task_id]
+        );
+        if (rows.length === 0) throw new Error("Task not found");
+        return rows[0];
     }
+
 }
