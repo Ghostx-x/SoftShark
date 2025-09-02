@@ -1,7 +1,7 @@
 import express from "express";
-import { ProjectController } from "../controllers/project_controller.js";
-import { validate } from "../middleware/validation_handler.js";
-import { createProjectSchema, listProjectsSchema } from "../validations/project_validator.js";
+import { ProjectController } from "../controllers/project_controller";
+import { validate } from "../middleware/validation_handler";
+import { createProjectSchema, listProjectsSchema } from "../validations/project_validator";
 
 const router = express.Router();
 
@@ -58,15 +58,6 @@ const router = express.Router();
  *                       format: date-time
  *       400:
  *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 message:
- *                   type: string
  *       500:
  *         description: Internal server error
  */
@@ -151,25 +142,6 @@ router.get("/", validate(listProjectsSchema, "query"), ProjectController.list);
  *     responses:
  *       200:
  *         description: Project details
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 data:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: integer
- *                     name:
- *                       type: string
- *                     description:
- *                       type: string
- *                     created_at:
- *                       type: string
- *                       format: date-time
  *       400:
  *         description: Invalid project ID
  *       404:

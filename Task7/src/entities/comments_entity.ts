@@ -5,16 +5,14 @@ export class Comment {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column()
+    @Column({ type: 'int' })
     task_id!: number
 
-    @Column()
+    @Column({ type: 'text' })
     content!: string
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     created_at!: Date
-
-
 
     @ManyToOne('Task', (task: any) => task.comments, { onDelete: 'CASCADE' })
     task!: any

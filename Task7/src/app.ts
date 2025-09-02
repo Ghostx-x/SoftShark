@@ -1,34 +1,27 @@
-import express, { Application } from 'express'
-import dotenv from 'dotenv'
-import { swaggerDocs } from './swagger/swagger.js'
-import projectRoutes from './routes/project_routes.js'
-import { dataSource } from './database/data_source.js'
+import "reflect-metadata";
+import express, { Application } from 'express';
+import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerDocs } from './swagger/swagger.js';
+import projectRoutes from './routes/project_routes.js';
+import {dataSource} from "./database/data_source";
+import taskRoutes from "./routes/task_routes";
+import userRoutes from "./routes/user_routes";
+
 
 
 dotenv.config()
-
-const app: Application = express()
+await dataSource.initialize();
+const app = express()
 app.use(express.json())
 
-async function startServer() {
-    try {
-        await dataSource.initialize()
-        console.log('Database connected successfully')
+app.use('/projects', projectRoutes)
+app.use('/tasks', taskRoutes)
+app.use('/users', userRoutes)
+//app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+swaggerDocs(app)
+app.listen(8080, () => {
+    console.log('Running on port 8080')
+})
 
-        app.use('/projects', projectRoutes)
-        // app.use('/tasks', taskRoutes)
-
-        swaggerDocs(app)
-
-        app.listen(8080, () => {
-            console.log('Server running on port 8080')
-            console.log('Swagger docs: http://localhost:8080/api-docs')
-        })
-    } catch (err) {
-        console.error('Database connection failed:', err)
-        process.exit(1)
-    }
-}
-
-startServer()

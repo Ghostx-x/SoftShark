@@ -5,16 +5,14 @@ export class Project {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column()
+    @Column({ type: 'varchar' })
     name!: string
 
-    @Column()
+    @Column({ type: 'text' })
     description!: string
 
     @CreateDateColumn({ type: 'timestamp' })
     created_at!: Date
-
-
 
     @OneToMany('Task', (task: any) => task.project)
     tasks!: any[]

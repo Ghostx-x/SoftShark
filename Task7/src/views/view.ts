@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { AppErrors } from "../errors/error_class.js";
+import { AppErrors } from "../errors/error_class";
 
 export class View {
 

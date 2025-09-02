@@ -5,13 +5,11 @@ export class User {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column()
+    @Column({ type: 'varchar' })
     username!: string
 
-    @Column()
+    @Column({ type: 'varchar' })
     profession!: string
-
-
 
     @OneToMany('Task', (task: any) => task.assigned_to)
     tasks!: any[]

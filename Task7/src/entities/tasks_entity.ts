@@ -1,13 +1,13 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne } from 'typeorm'
 
-export enum TaskStatus { TODO = 'todo',  IN_PROGRESS = 'in_progress',  DONE = 'done'}
+export enum TaskStatus { TODO = 'todo', IN_PROGRESS = 'in_progress', DONE = 'done' }
 
 @Entity('tasks')
 export class Task {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column()
+    @Column({ type: 'varchar' })
     title!: string
 
     @Column({ type: 'enum', enum: TaskStatus })
@@ -21,8 +21,6 @@ export class Task {
 
     @UpdateDateColumn({ type: 'timestamp' })
     updated_at!: Date
-
-
 
     @OneToMany('Comment', (comment: any) => comment.task)
     comments!: any[]

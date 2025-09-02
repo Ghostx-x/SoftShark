@@ -1,4 +1,4 @@
-// src/swagger.ts
+
 import { Application } from 'express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
@@ -8,9 +8,12 @@ const options = {
         openapi: '3.0.0',
         info: { title: 'Project & Task API', version: '1.0.0' },
     },
-    apis: ['./dist/routes/*.js'], // use JS files, not TS
-};
+    apis: [
+        './src/routes/*.ts',
+        './dist/routes/*.js'
+    ],
 
+};
 
 const swaggerSpec = swaggerJsdoc(options);
 
