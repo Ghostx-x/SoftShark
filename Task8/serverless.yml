@@ -1,0 +1,14 @@
+service: hello-world
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+
+functions:
+  helloWorld:
+    handler: handler.helloWorld
+    events:
+        - http:
+            path: helloWorld
+            method: get
