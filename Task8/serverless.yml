@@ -1,14 +1,16 @@
-service: hello-world
+service: uploadFile
 
 provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
+  environment:
+    BUCKET_NAME: file-upload-bucket-natali
 
 functions:
   helloWorld:
-    handler: handler.helloWorld
+    handler: handler.uploadFile
     events:
         - http:
-            path: helloWorld
-            method: get
+            path: uploadFile
+            method: put
